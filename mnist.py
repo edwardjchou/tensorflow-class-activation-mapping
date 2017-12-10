@@ -1,9 +1,12 @@
+import matplotlib
+matplotlib.use('Agg')
+
 from class_activation_map import *
 from lenet_slim import le_net
 from utils import *
 
 batch_size = 256
-dataset_percentage = 1.0 # 1.0 takes 100k rows. 0.1 takes 10k rows.
+dataset_percentage = 0.001 # 1.0 takes 100k rows. 0.1 takes 10k rows.
 
 if __name__ == '__main__':
     [images_train, labels_train], [images_test, labels_test] = read_dataset(dataset_percentage)
@@ -30,16 +33,19 @@ if __name__ == '__main__':
 
     saver = tf.train.Saver(tf.all_variables(), max_to_keep=10)
 
-    sess = tf.Session()
+    config = tf.ConfigProto(device_count = {'GPU': 0})
+    sess = tf.Session(config=config)
     sess.run(init)
     step_start = restore(sess, saver)
     print('Finished initializing the model...')
 
-    for i in range(step_start, step_start+1):#100000):
+    for i in range(step_start, 100000):
         print(i)
         batch_xs, batch_ys, _ = next_batch(images_train, labels_train, i, batch_size)
+        print('before run')
         sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
-        if i % 100 == 0:
+        if i % 10 == 0:
+            print(i)
             save(sess, saver, i)
             accuracy_list = []
             j = 0

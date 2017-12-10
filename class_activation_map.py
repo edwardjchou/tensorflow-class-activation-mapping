@@ -1,9 +1,11 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from skimage.io import imsave
 
 from utils import mkdir_p
 
+matplotlib.use('Agg')
 
 def get_class_map(label, conv, im_width):
     output_channels = int(conv.get_shape()[-1])
@@ -20,6 +22,7 @@ def get_class_map(label, conv, im_width):
 def inspect_class_activation_map(sess, class_activation_map, top_conv,
                                  images_test, labels_test, global_step,
                                  num_images, x, y_, y):
+    print('inspect_class_activation_map')
     print(num_images)
     for s in range(num_images):
         output_dir = 'out/img_{}/'.format(s)
@@ -27,6 +30,8 @@ def inspect_class_activation_map(sess, class_activation_map, top_conv,
         imsave('{}/image_test.png'.format(output_dir), images_test[s])
         img = images_test[s:s + 1]
         label = labels_test[s:s + 1]
+        print('printing important info')
+        print(sess, class_activation_map, top_conv, img, label)
         conv6_val, output_val = sess.run([top_conv, y], feed_dict={x: img})
         classmap_answer = sess.run(class_activation_map, feed_dict={y_: label, top_conv: conv6_val})
         classmap_vis = list(map(lambda x: ((x - x.min()) / (x.max() - x.min())), classmap_answer))
