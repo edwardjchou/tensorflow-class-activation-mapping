@@ -31,11 +31,7 @@ def inspect_class_activation_map(sess, class_activation_map, top_conv,
         img = images_test[s:s + 1]
         label = labels_test[s:s + 1]
         print('printing important info')
-        print(sess)
-        print(class_activation_map)
-        print(top_conv)
-        print(img.size)
-        print(label.size)
+        print(sess, class_activation_map.size, top_conv, img.size, label.size)
         conv6_val, output_val = sess.run([top_conv, y], feed_dict={x: img})
         classmap_answer = sess.run(class_activation_map, feed_dict={y_: label, top_conv: conv6_val})
         classmap_vis = list(map(lambda x: ((x - x.min()) / (x.max() - x.min())), classmap_answer))

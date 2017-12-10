@@ -47,6 +47,7 @@ def read_dataset(percentage=1.0, cutoff=0.7):
     labels = np.array(labels)
     images = []
     n = len(glob('/tmp/img/*.png'))
+    print(glob('/tmp/img/*.png'))
     assert n == len(labels)
     max_images = int(percentage * n)
     labels = labels[:max_images]

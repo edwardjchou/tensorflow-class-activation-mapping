@@ -6,7 +6,7 @@ from lenet_slim import le_net
 from utils import *
 
 batch_size = 256
-dataset_percentage = 0.0001 # 1.0 takes 100k rows. 0.1 takes 10k rows.
+dataset_percentage = 0.00001 # 1.0 takes 100k rows. 0.1 takes 10k rows.
 
 if __name__ == '__main__':
     [images_train, labels_train], [images_test, labels_test] = read_dataset(dataset_percentage)
