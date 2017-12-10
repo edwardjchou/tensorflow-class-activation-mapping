@@ -12,7 +12,7 @@ def get_class_map(label, conv, im_width):
         label_w = tf.gather(tf.transpose(tf.get_variable('W')), label)
         label_w = tf.reshape(label_w, [-1, output_channels, 1])
     conv_resized = tf.reshape(conv_resized, [-1, im_width * im_width, output_channels])
-    classmap = tf.batch_matmul(conv_resized, label_w)
+    classmap = tf.matmul(conv_resized, label_w)
     classmap = tf.reshape(classmap, [-1, im_width, im_width])
     return classmap
 
@@ -20,6 +20,7 @@ def get_class_map(label, conv, im_width):
 def inspect_class_activation_map(sess, class_activation_map, top_conv,
                                  images_test, labels_test, global_step,
                                  num_images, x, y_, y):
+    print(num_images)
     for s in range(num_images):
         output_dir = 'out/img_{}/'.format(s)
         mkdir_p(output_dir)
